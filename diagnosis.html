@@ -4,35 +4,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diagnosis</title>
+    <title>Diagnosis Page</title>
     <link rel="stylesheet" href="diagnosis.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .diagnosis-container {
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .next-button {
+            display: block;
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: #fff;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .next-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 
 <body>
-    <!-- Navigation Bar -->
-    <nav class="navbar">
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="patient_form.html">Patient Form</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-    </nav>
 
-    <!-- Diagnosis Section -->
     <div class="diagnosis-container">
         <h2>Diagnosis Result</h2>
         <p>Based on the symptoms, our system suggests the following diagnosis:</p>
-        <div id="diagnosis-result">
-            <!-- The diagnosis will be dynamically populated here -->
+        <div id="patient_form">
+            <!-- Diagnosis details will be dynamically populated here -->
         </div>
         <a href="medicine_recommendation.html" class="next-button">Get Medicine Recommendation</a>
     </div>
 
-    <footer>
-        <p>© 2024 Medical Discovery & Symptom Diagnosis System | All rights reserved</p>
-    </footer>
+    <script>
+        // Retrieve the patient data from localStorage
+        var patientData = JSON.parse(localStorage.getItem('patientData'));
 
-    <script src="diagnosis.js"></script>
+        if (patientData) {
+            // Display the patient information in the diagnosis section
+            var diagnosisDiv = document.getElementById('patient_form');
+            diagnosisDiv.innerHTML = `
+                <p><strong>Name:</strong> ${patientData.name}</p>
+                <p><strong>Age:</strong> ${patientData.age}</p>
+                <p><strong>Gender:</strong> ${patientData.gender}</p>
+                <p><strong>Primary Symptom:</strong> ${patientData.primarySymptom}</p>
+                <p><strong>Symptom Severity:</strong> ${patientData.severity}</p>
+                <p><strong>Symptom Duration:</strong> ${patientData.duration}</p>
+                <p><strong>Chronic Conditions:</strong> ${patientData.chronicConditions.join(', ')}</p>
+                <p><strong>Current Medications:</strong> ${patientData.medications}</p>
+                <p><strong>Allergies:</strong> ${patientData.allergies}</p>
+                <p><strong>Smoking Status:</strong> ${patientData.smokingStatus}</p>
+                <p><strong>Alcohol Consumption:</strong> ${patientData.alcoholConsumption}</p>
+                <p><strong>Recent Travel History:</strong> ${patientData.travelHistory}</p>
+                <p><strong>Family Medical History:</strong> ${patientData.familyHistory}</p>
+            `;
+        } else {
+            // If no data is found, display an error message
+            document.getElementById('patient_form').innerHTML = '<p>No patient data found. Please go back to the form and submit the information.</p>';
+        }
+    </script>
+
 </body>
 
 </html>
