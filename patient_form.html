@@ -61,16 +61,17 @@
     <!-- Navigation Bar -->
     <nav class="navbar">
         <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="services.html">Services</a></li>
         </ul>
     </nav>
 
     <!-- Patient Data Collection Form -->
     <div class="form-container">
         <h2>Patient Information</h2>
-        <form action="#" method="post">
+        <form id="patientForm" onsubmit="saveFormData(event)">
             
             <!-- Full Name -->
             <div class="form-group">
@@ -228,23 +229,12 @@
             </div>
             <hr>
 
-            <!-- Pregnancy/Breastfeeding Section (for females only) -->
-            <div id="pregnancy_section" class="form-group">
-                <label>Are you pregnant or breastfeeding?</label>
-                <input type="radio" id="yes_pregnancy" name="pregnancy_status" value="pregnant">
-                <label for="yes_pregnancy">Pregnant</label>
-                <input type="radio" id="yes_breastfeeding" name="pregnancy_status" value="breastfeeding">
-                <label for="yes_breastfeeding">Breastfeeding</label>
-                <input type="radio" id="no_pregnancy" name="pregnancy_status" value="no">
-                <label for="no_pregnancy">No</label>
-            </div>
-            <hr>
-
             <!-- Family Medical History -->
             <div class="form-group">
                 <label for="family_history">Family Medical History:</label>
-                <textarea id="family_history" name="family_history" rows="3" placeholder="Describe any family history of diseases..."></textarea>
+                <textarea id="family_history" name="family_history" rows="3"></textarea>
             </div>
+            <hr>
 
             <!-- Submit Button -->
             <div class="form-group">
@@ -254,15 +244,35 @@
     </div>
 
     <script>
-        function showPregnancyOptions(isFemale) {
-            var pregnancySection = document.getElementById("pregnancy_section");
-            if (isFemale) {
-                pregnancySection.style.display = "block";
-            } else {
-                pregnancySection.style.display = "none";
-            }
+        function saveFormData(event) {
+            event.preventDefault(); // Prevent form from submitting the traditional way
+
+            // Capture data from form fields
+            var patientData = {
+                name: document.getElementById('name').value,
+                age: document.getElementById('age').value,
+                gender: document.querySelector('input[name="gender"]:checked').value,
+                weight: document.getElementById('weight').value,
+                primarySymptom: document.getElementById('primary_symptom').value,
+                severity: document.querySelector('input[name="severity"]:checked').value,
+                duration: document.getElementById('duration').value,
+                chronicConditions: Array.from(document.querySelectorAll('input[name="chronic_conditions"]:checked')).map(el => el.value),
+                medications: document.getElementById('medications').value,
+                allergies: document.getElementById('allergies').value,
+                smokingStatus: document.querySelector('input[name="smoking_status"]:checked').value,
+                alcoholConsumption: document.querySelector('input[name="alcohol_consumption"]:checked').value,
+                travelHistory: document.querySelector('input[name="travel_history"]:checked').value,
+                familyHistory: document.getElementById('family_history').value
+            };
+
+            // Store patient data in localStorage
+            localStorage.setItem('patientData', JSON.stringify(patientData));
+
+            // Redirect to the diagnosis page
+            window.location.href = 'diagnosis.html';
         }
     </script>
+
 </body>
 
 </html>
